@@ -1,5 +1,6 @@
-import logo from './logo.svg';
-import './App.css';
+import { VideoChat } from "./components";
+import logo from "./logo.svg";
+import "./App.css";
 
 function App() {
   return (
@@ -8,10 +9,15 @@ function App() {
         <h1>Video Chat for Gatherly</h1>
       </header>
       <main>
-        <h1>Vidoe Chat</h1>
+        <VideoChat />
       </main>
       <footer>
-        <p>by <a href="https://www.linkedin.com/in/albert-wright-3b2466202/">Albert Wright</a></p>
+        <p>
+          by{" "}
+          <a href="https://www.linkedin.com/in/albert-wright-3b2466202/">
+            Albert Wright
+          </a>
+        </p>
       </footer>
     </div>
   );

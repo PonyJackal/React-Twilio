@@ -1,27 +1,27 @@
 import React, { useState, useCallback } from "react";
-import Room from "./Room";
 
 const VideoChat = () => {
   const [formState, setFormState] = useState({
-      username: '',
-      roomname: '',
-      isConnecting: false
-  })
+    username: "",
+    roomname: "",
+    isConnecting: false,
+  });
 
-  const handleChange = useCallback((event) => {
+  const handleChange = (event) => {
     setFormState({
       ...formState,
-      [event.target.name]: event.target.value
+      [event.target.name]: event.target.value,
     });
-  }, []);
+  };
 
-  const handleSubmit = () => {
+  const handleSubmit = (event) => {
+    event.preventDefault();
     setFormState({
       ...formState,
-      isConnecting: true
-    })
-    console.log(formState)
-  }
+      isConnecting: true,
+    });
+    console.log(formState);
+  };
 
   return (
     <form onSubmit={handleSubmit}>
@@ -29,6 +29,7 @@ const VideoChat = () => {
       <div>
         <label htmlFor="name">Name:</label>
         <input
+          name="username"
           type="text"
           id="field"
           value={formState.username}
@@ -41,9 +42,10 @@ const VideoChat = () => {
       <div>
         <label htmlFor="room">Room name:</label>
         <input
+          name="roomname"
           type="text"
           id="room"
-          value={formState.username}
+          value={formState.roomname}
           onChange={handleChange}
           readOnly={formState.isConnecting}
           required
@@ -54,7 +56,7 @@ const VideoChat = () => {
         {formState.isConnecting ? "Connecting" : "Join"}
       </button>
     </form>
-  )
+  );
 };
 
 export default VideoChat;
