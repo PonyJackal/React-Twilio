@@ -24,7 +24,7 @@ const Room = ({ roomName, room, handleLogout }) => {
   }, [room]);
 
   const remoteParticipants = participants.map((participant) => (
-    <h1>{participant.sid}</h1>
+    <Participant key={participant.sid} participant={participant} />
   ));
 
   return (
@@ -32,7 +32,14 @@ const Room = ({ roomName, room, handleLogout }) => {
       <h2>Room: {roomName}</h2>
       <button onClick={handleLogout}>Log out</button>
       <div className="local-participant">
-        {room ? <h1>{room.localParticipant.sid}</h1> : ""}
+        {room ? (
+          <Participant
+            key={room.localParticipant.sid}
+            participant={room.localParticipant}
+          />
+        ) : (
+          ""
+        )}
       </div>
       <h3>Remote Participants</h3>
       <div className="remote-participants">{remoteParticipants}</div>
