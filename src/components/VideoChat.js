@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useCallback, useEffect } from "react";
 import Video from "twilio-video";
 import Room from "./Room";
 
@@ -58,7 +58,45 @@ const VideoChat = () => {
       });
   };
 
-  if (room) return <Room />;
+  const handleLogout = useCallback(() => {
+    setRoom((prevRoom) => {
+      if (prevRoom) {
+        prevRoom.localParticipant.tracks.forEach((trackPub) => {
+          trackPub.track.stop();
+        });
+        prevRoom.disconnect();
+      }
+      return null;
+    });
+  }, []);
+
+  useEffect(() => {
+    if (room) {
+      const tidyUp = (event) => {
+        if (event.persisted) {
+          return;
+        }
+        if (room) {
+          handleLogout();
+        }
+      };
+      window.addEventListener("pagehide", tidyUp);
+      window.addEventListener("beforeunload", tidyUp);
+      return () => {
+        window.removeEventListener("pagehide", tidyUp);
+        window.removeEventListener("beforeunload", tidyUp);
+      };
+    }
+  }, [room, handleLogout]);
+
+  if (room)
+    return (
+      <Room
+        roomName={formState.roomname}
+        room={room}
+        handleLogout={handleLogout}
+      />
+    );
 
   return (
     <form onSubmit={handleSubmit}>
