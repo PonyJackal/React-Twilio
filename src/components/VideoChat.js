@@ -1,27 +1,68 @@
-import React, { useState, useCallback } from "react";
+import React, { useState } from "react";
+import Video from "twilio-video";
 
 const VideoChat = () => {
+  // state for form
   const [formState, setFormState] = useState({
     username: "",
     roomname: "",
     isConnecting: false,
   });
-
+  const [room, setRoom] = useState("");
+  // handle input change
   const handleChange = (event) => {
     setFormState({
       ...formState,
       [event.target.name]: event.target.value,
     });
   };
-
-  const handleSubmit = (event) => {
+  // handle submit
+  const handleSubmit = async (event) => {
     event.preventDefault();
+    // set isConnecting true
     setFormState({
       ...formState,
       isConnecting: true,
     });
-    console.log(formState);
+    // get videToken from express server
+    console.log(
+      JSON.stringify({
+        identity: formState.username,
+        room: formState.roomname,
+      })
+    );
+    const data = await fetch("http://localhost:3001/video/token", {
+      method: "POST",
+      body: JSON.stringify({
+        identity: formState.username,
+        room: formState.roomname,
+      }),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    }).then((res) => res.json());
+
+    // connect video room
+    Video.connect(data.token, {
+      name: formState.roomname,
+    })
+      .then((room) => {
+        setFormState({
+          ...formState,
+          isConnecting: false,
+        });
+        setRoom(room);
+      })
+      .catch((err) => {
+        console.error(err);
+        setFormState({
+          ...formState,
+          isConnecting: false,
+        });
+      });
   };
+
+  if (room) <h1>You joined Room</h1>;
 
   return (
     <form onSubmit={handleSubmit}>

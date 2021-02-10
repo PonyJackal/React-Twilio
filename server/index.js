@@ -1,5 +1,6 @@
 const config = require("./config");
 const express = require("express");
+const cors = require("cors");
 const bodyParser = require("body-parser");
 const pino = require("express-pino-logger")();
 const { videoToken } = require("./tokens");
@@ -8,6 +9,7 @@ const app = express();
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 app.use(pino);
+app.use(cors());
 
 const sendTokenResponse = (token, res) => {
   res.set("Content-Type", "application/json");
@@ -25,6 +27,7 @@ app.get("/api/greeting", (req, res) => {
 });
 
 app.get("/video/token", (req, res) => {
+  console.log(req.query);
   const identity = req.query.identity;
   const room = req.query.room;
   const token = videoToken(identity, room, config);
