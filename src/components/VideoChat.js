@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import Video from "twilio-video";
+import Room from "./Room";
 
 const VideoChat = () => {
   // state for form
@@ -25,12 +26,7 @@ const VideoChat = () => {
       isConnecting: true,
     });
     // get videToken from express server
-    console.log(
-      JSON.stringify({
-        identity: formState.username,
-        room: formState.roomname,
-      })
-    );
+
     const data = await fetch("http://localhost:3001/video/token", {
       method: "POST",
       body: JSON.stringify({
@@ -41,7 +37,7 @@ const VideoChat = () => {
         "Content-Type": "application/json",
       },
     }).then((res) => res.json());
-
+    console.log(data.token);
     // connect video room
     Video.connect(data.token, {
       name: formState.roomname,
@@ -62,7 +58,7 @@ const VideoChat = () => {
       });
   };
 
-  if (room) <h1>You joined Room</h1>;
+  if (room) return <Room />;
 
   return (
     <form onSubmit={handleSubmit}>
