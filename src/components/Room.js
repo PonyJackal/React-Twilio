@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import Participant from "./Participant";
 
 const Room = ({ roomName, room, handleLogout }) => {
   const [participants, setParticipants] = useState([]);
