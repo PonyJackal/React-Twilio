@@ -22,4 +22,10 @@ This will run react app on dev environment (port: 3000) on your local device.
 
 ### npm run server / yarn run server
 
-This will run express server on your local device with port 3001
+This will run express server on your local device using 3001 port
+
+## How To Use
+
+#### Input your name and room name that you are going to join
+
+![screen](./images/screenshot.jpg)
