@@ -28,4 +28,4 @@ This will run express server on your local device using 3001 port
 
 #### Input your name and room name that you are going to join
 
-![screen](./screenshot.jpg)
+![screen](./screenshot.png)
